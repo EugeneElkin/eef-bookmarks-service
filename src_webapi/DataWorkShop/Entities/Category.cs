@@ -7,7 +7,6 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Category> Categories { get; set; }
-        public ICollection<Bookmark> Bookmarks { get; set; }
+        public ICollection<CategoryBookmark> CategoryBookmarks { get; } = new List<CategoryBookmark>();
     }
 }
