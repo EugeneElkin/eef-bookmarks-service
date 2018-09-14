@@ -10,8 +10,8 @@ using System;
 namespace DataWorkShop.Migrations
 {
     [DbContext(typeof(BookmarksDbContext))]
-    [Migration("20180702113746_Initial")]
-    partial class Initial
+    [Migration("20180914084634_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,17 +73,51 @@ namespace DataWorkShop.Migrations
                     b.ToTable("CategoryBookmark");
                 });
 
+            modelBuilder.Entity("DataWorkShop.Entities.CategoryCategory", b =>
+                {
+                    b.Property<string>("CategoryId");
+
+                    b.Property<string>("ChildCategoryId");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.HasKey("CategoryId", "ChildCategoryId");
+
+                    b.HasIndex("CategoryId")
+                        .IsUnique();
+
+                    b.HasIndex("ChildCategoryId")
+                        .IsUnique();
+
+                    b.ToTable("CategoryCategory");
+                });
+
             modelBuilder.Entity("DataWorkShop.Entities.CategoryBookmark", b =>
                 {
                     b.HasOne("DataWorkShop.Entities.Bookmark", "Bookmark")
-                        .WithMany("CategoryBookmarks")
+                        .WithMany()
                         .HasForeignKey("BookmarkId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DataWorkShop.Entities.Category", "Category")
-                        .WithMany("CategoryBookmarks")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("DataWorkShop.Entities.CategoryCategory", b =>
+                {
+                    b.HasOne("DataWorkShop.Entities.Category", "Category")
+                        .WithOne()
+                        .HasForeignKey("DataWorkShop.Entities.CategoryCategory", "CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DataWorkShop.Entities.Category", "ChildCategory")
+                        .WithOne()
+                        .HasForeignKey("DataWorkShop.Entities.CategoryCategory", "ChildCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

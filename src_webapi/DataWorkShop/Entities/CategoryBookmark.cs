@@ -3,7 +3,7 @@
     using ApiInstructions.BaseEntities.Entities.Interfaces;
     using System.ComponentModel.DataAnnotations;
 
-    public class CategoryBookmark: IVersionedEntity
+    public class CategoryBookmark : IVersionedEntity
     {
         public string CategoryId { get; set; }
         public Category Category { get; set; }
