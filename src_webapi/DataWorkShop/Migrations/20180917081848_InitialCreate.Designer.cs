@@ -10,7 +10,7 @@ using System;
 namespace DataWorkShop.Migrations
 {
     [DbContext(typeof(BookmarksDbContext))]
-    [Migration("20180914131614_InitialCreate")]
+    [Migration("20180917081848_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,8 @@ namespace DataWorkShop.Migrations
                     b.Property<string>("CategoryId");
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("Link");
 
                     b.Property<string>("Name");
 

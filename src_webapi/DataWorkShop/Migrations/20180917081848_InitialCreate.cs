@@ -36,6 +36,7 @@ namespace DataWorkShop.Migrations
                     Id = table.Column<string>(nullable: false),
                     CategoryId = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    Link = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },

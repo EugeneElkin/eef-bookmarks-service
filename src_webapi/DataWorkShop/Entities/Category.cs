@@ -13,7 +13,7 @@
         [ForeignKey("ParentId")]
         public Category Parent { get; set; }
 
-        public ICollection<Category> Categories { get; } = new List<Category>();
-        public ICollection<Bookmark> Bookmarks { get; } = new List<Bookmark>();
+        public ICollection<Category> Categories { get; set; } = new List<Category>();
+        public ICollection<Bookmark> Bookmarks { get; set; } = new List<Bookmark>();
     }
 }

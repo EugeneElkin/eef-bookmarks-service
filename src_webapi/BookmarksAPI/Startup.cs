@@ -1,6 +1,9 @@
 ﻿namespace BookmarksAPI
 {
+    using AutoMapper;
+    using BookmarksAPI.Models;
     using DataWorkShop;
+    using DataWorkShop.Entities;
     using DataWorkShop.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -46,6 +49,13 @@
             }
 
             app.UseMvc();
+
+            Mapper.Initialize(mapper =>
+            {
+                mapper.CreateMap<Category, CategoryViewModel>()
+                .ForSourceMember(sm => sm.RowVersion, opt => opt.Ignore())
+                .ForSourceMember(sm => sm.Parent, opt => opt.Ignore());
+            });
         }
     }
 }

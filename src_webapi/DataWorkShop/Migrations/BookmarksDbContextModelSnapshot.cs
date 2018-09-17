@@ -28,6 +28,8 @@ namespace DataWorkShop.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("Link");
+
                     b.Property<string>("Name");
 
                     b.Property<byte[]>("RowVersion")
