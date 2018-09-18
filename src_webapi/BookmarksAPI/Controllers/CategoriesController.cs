@@ -44,6 +44,16 @@
             return Ok(sanitizedCategories);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.context.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         //// GET: api/Categories/5
         //[HttpGet("{id}", Name = "Get")]
         //public string Get(int id)
