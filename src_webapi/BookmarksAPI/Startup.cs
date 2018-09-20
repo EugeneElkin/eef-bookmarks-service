@@ -5,6 +5,7 @@
     using DataWorkShop;
     using DataWorkShop.Entities;
     using DataWorkShop.Extensions;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,12 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BookmarksDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BookmarksService"), b => b.MigrationsAssembly("DataWorkShop")));
-            services.AddMvc();
+            services.AddMvcCore();
+            services.AddAuthentication(authOpts =>
+            {
+                authOpts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOpts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +54,17 @@
                 }
             }
 
+            // global cors policy
+            // TODO: set up to use only with proved hosts
+            app.UseCors(x =>
+            {
+                x.AllowAnyOrigin();
+                x.AllowAnyMethod();
+                x.AllowAnyHeader();
+                x.AllowCredentials();
+            });
+
+            app.UseAuthentication();
             app.UseMvc();
 
             Mapper.Initialize(mapper =>

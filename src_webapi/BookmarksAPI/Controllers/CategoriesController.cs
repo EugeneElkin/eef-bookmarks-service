@@ -8,8 +8,11 @@
     using BookmarksAPI.Models;
     using DataWorkShop;
     using DataWorkShop.Entities;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
+    [ApiController]
     [Produces("application/json")]
     [Route("api/Categories")]
     public class CategoriesController : Controller
