@@ -6,9 +6,15 @@
 
     public static class ServiceCollectionExt
     {
-        public static void AddAutoMapper(this IServiceCollection service)
+        public static void AddAutoMapper(this IServiceCollection services)
         {
             Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
+        }
+
+        public static void AddUserService(this IServiceCollection services)
+        {
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }
