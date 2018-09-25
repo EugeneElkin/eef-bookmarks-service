@@ -1,6 +1,7 @@
 ﻿namespace BookmarksAPI
 {
     using AutoMapper;
+    using BookmarksAPI.Extensions;
     using BookmarksAPI.Models;
     using DataWorkShop;
     using DataWorkShop.Entities;
@@ -25,7 +26,8 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BookmarksDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BookmarksService"), b => b.MigrationsAssembly("DataWorkShop")));
-            services.AddMvcCore();
+            services.AddMvc();
+            services.AddAutoMapper();
             services.AddAuthentication(authOpts =>
             {
                 authOpts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,13 +68,6 @@
 
             app.UseAuthentication();
             app.UseMvc();
-
-            Mapper.Initialize(mapper =>
-            {
-                mapper.CreateMap<Category, CategoryViewModel>()
-                .ForSourceMember(sm => sm.RowVersion, opt => opt.Ignore())
-                .ForSourceMember(sm => sm.Parent, opt => opt.Ignore());
-            });
         }
     }
 }
