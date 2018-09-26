@@ -2,7 +2,7 @@
 {    
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
-    using ApiInstructions.BaseEntities.Entities;
+    using EEFApps.ApiInstructions.BaseEntities.Entities;
 
     public class Category : BaseEntity<string>
     {

@@ -1,6 +1,6 @@
 ﻿namespace DataWorkShop.Entities
 {
-    using ApiInstructions.BaseEntities.Entities;
+    using EEFApps.ApiInstructions.BaseEntities.Entities;
 
     public class User: BaseEntity<string>
     {

@@ -2,19 +2,19 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using ApiInstructions.DataInstructions.Instructions;
-    using ApiInstructions.DataInstructions.Instructions.Structures;
     using AutoMapper;
     using BookmarksAPI.Models;
     using DataWorkShop;
     using DataWorkShop.Entities;
+    using EEFApps.ApiInstructions.DataInstructions.Instructions;
+    using EEFApps.ApiInstructions.DataInstructions.Instructions.Structures;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
     [ApiController]
     [Produces("application/json")]
-    [Route("api/Categories")]
+    [Route("api/categories")]
     public class CategoriesController : Controller
     {
         private readonly BookmarksDbContext context;
