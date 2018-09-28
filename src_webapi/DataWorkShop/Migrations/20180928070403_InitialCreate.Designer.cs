@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataWorkShop.Migrations
 {
     [DbContext(typeof(BookmarksDbContext))]
-    [Migration("20180925101305_InitialCreate")]
+    [Migration("20180928070403_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,9 @@ namespace DataWorkShop.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<string>("Username");
+                    b.Property<int>("Status");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 

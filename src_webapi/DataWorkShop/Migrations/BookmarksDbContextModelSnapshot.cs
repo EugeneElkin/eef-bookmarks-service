@@ -82,7 +82,9 @@ namespace DataWorkShop.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<string>("Username");
+                    b.Property<int>("Status");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 

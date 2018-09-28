@@ -1,7 +1,9 @@
 ﻿namespace BookmarksAPI
 {
+    using System.Text;
     using BookmarksAPI.Extensions;
     using BookmarksAPI.Services;
+    using BookmarksAPI.Services.Interfaces;
     using DataWorkShop;
     using DataWorkShop.Extensions;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,8 +13,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -30,19 +30,21 @@
             services.AddMvc();
             services.AddAutoMapper();
             services.AddUserService();
+            services.AddTokenService();
 
-            // configure strongly typed settings objects
+            // Configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);           
+            services.Configure<AppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            // configure jwt authentication
+            // Configure jwt authentication
             services.AddAuthentication(authOpts =>
             {
                 authOpts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 authOpts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x => {
+            })
+            .AddJwtBearer(x => {
                 x.Events = new JwtBearerEvents
                 {
                     OnTokenValidated = async context =>
@@ -52,7 +54,7 @@
                         var user = await userService.GetByIdAsync(userId);
                         if (user == null)
                         {
-                            // return unauthorized if user no longer exists
+                            // Return unauthorized if user no longer exists
                             context.Fail("Unauthorized");
                         }
                     }
@@ -90,7 +92,7 @@
                 }
             }
 
-            // global cors policy
+            // Global cors policy
             // TODO: set up to use only with proved hosts
             app.UseCors(x =>
             {

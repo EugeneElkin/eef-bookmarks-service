@@ -36,9 +36,10 @@ namespace DataWorkShop.Migrations
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
-                    PasswordSalt = table.Column<byte[]>(nullable: true)
+                    PasswordSalt = table.Column<byte[]>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

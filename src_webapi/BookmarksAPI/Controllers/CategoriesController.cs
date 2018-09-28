@@ -28,6 +28,9 @@
         [HttpGet]
         public async Task<IActionResult> GetCategories(string orderByField = null, bool isDescending = false, int? pageSize = null, int? pageAt = null)
         {
+            // TODO: show data regarding user identity
+            // this.User.Identity.Name;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
