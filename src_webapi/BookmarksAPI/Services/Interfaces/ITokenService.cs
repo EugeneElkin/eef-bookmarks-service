@@ -1,9 +1,11 @@
 ﻿namespace BookmarksAPI.Services.Interfaces
 {
+    using BookmarksAPI.Services.Structures;
     using DataWorkShop.Entities;
 
     public interface ITokenService
     {
-        string CreateAccessToken(User user);
+        JsonWebToken CreateAccessToken(User user);
+        JsonWebToken UpdateAccessToken(string refreshToken);
     }
 }

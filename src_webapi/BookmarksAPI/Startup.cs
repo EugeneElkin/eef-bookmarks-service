@@ -1,5 +1,6 @@
 ﻿namespace BookmarksAPI
 {
+    using System;
     using System.Text;
     using BookmarksAPI.Extensions;
     using BookmarksAPI.Services;
@@ -49,6 +50,14 @@
                 {
                     OnTokenValidated = async context =>
                     {
+                        var currentUtcDate = DateTime.UtcNow;
+                        var validToDate = context.SecurityToken.ValidTo;
+
+                        if (validToDate < currentUtcDate)
+                        {
+                            context.Fail("Unauthorized");
+                        }
+
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = context.Principal.Identity.Name;
                         var user = await userService.GetByIdAsync(userId);

@@ -47,23 +47,26 @@
         }
 
         [AllowAnonymous]
-        // POST: api/users/card
-        [HttpPost("card")]
+        // POST: api/users/token
+        [HttpPost("token")]
         public async Task<IActionResult> Authenticate([FromBody]AuthenticatingUserViewModel authenticatingUser)
         {
             try
             {
                 var dbUser = await this.userService.AuthenticateAsync(authenticatingUser.UserName, authenticatingUser.Password);
-                var tokenString = this.tokenService.CreateAccessToken(dbUser);
+                var token = this.tokenService.CreateAccessToken(dbUser);
 
                 return Ok(
-                    new
+                    new AuthenticatedUserViewModel
                     {
-                        dbUser.Id,
-                        dbUser.UserName,
-                        dbUser.FirstName,
-                        dbUser.LastName,
-                        Token = tokenString
+                        Id = dbUser.Id,
+                        UserName = dbUser.UserName,
+                        FirstName = dbUser.FirstName,
+                        LastName = dbUser.LastName,
+                        TokenInfo = new TokenViewModel {
+                            AccessToken = token.AccessToken,
+                            RefreshToken = token.RefreshToken
+                        }
                     });
             }
             catch (CustomException ex)
@@ -71,5 +74,13 @@
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        //[AllowAnonymous]
+        //// POST: api/users/refreshtoken
+        //[HttpPost("refreshtoken")]
+        //public async Task<IActionResult> Refresh([FromBody]AuthenticatingUserViewModel authenticatingUser)
+        //{
+        //    return Ok();
+        //}
     }
 }
