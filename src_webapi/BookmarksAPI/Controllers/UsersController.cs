@@ -5,12 +5,10 @@
     using AutoMapper;
     using BookmarksAPI.Exceptions;
     using BookmarksAPI.Models;
-    using BookmarksAPI.Services;
     using BookmarksAPI.Services.Interfaces;
     using DataWorkShop.Entities;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
 
     [Authorize]
     [ApiController]
@@ -75,12 +73,20 @@
             }
         }
 
-        //[AllowAnonymous]
-        //// POST: api/users/refreshtoken
-        //[HttpPost("refreshtoken")]
-        //public async Task<IActionResult> Refresh([FromBody]AuthenticatingUserViewModel authenticatingUser)
-        //{
-        //    return Ok();
-        //}
+        [AllowAnonymous]
+        // POST: api/users/newtokens
+        [HttpPost("newtoken")]
+        public async Task<IActionResult> RefreshTokens([FromBody]TokenRequestViewModel tokenRequest)
+        {
+            try
+            {
+                var tokenInfo = await Task.FromResult(this.tokenService.UpdateAccessToken(tokenRequest.UserId, tokenRequest.RefreshToken));
+                return Ok(tokenInfo);
+            }
+            catch (CustomException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

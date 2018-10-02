@@ -28,7 +28,7 @@
             return this.CreateTokensPair(user.Id);
         }
 
-        public JsonWebToken UpdateAccessToken(string refreshToken)
+        public JsonWebToken UpdateAccessToken(string userId, string refreshToken)
         {
             if (!this.refreshTokensList.ContainsKey(refreshToken))
             {
@@ -36,17 +36,22 @@
             }
 
             var refreshTokenEntry = this.refreshTokensList[refreshToken];
+
+            // Revoke previous refresh token
+            this.refreshTokensList.Remove(refreshToken);
+
+            if (refreshTokenEntry.UserId != userId)
+            {
+                throw new CustomException("User is invalid! Refresh token was revoked!");
+            }
+
             var currentUtcDate = DateTime.UtcNow;
             var totalMinutes = (currentUtcDate - refreshTokenEntry.CreatedAt).TotalMinutes;
 
             if (totalMinutes >= refreshTokenEntry.LifetimeInMinutes)
             {
-                this.refreshTokensList.Remove(refreshToken);
                 throw new CustomException("Refresh token is expired! Please re-login!");
             }
-
-            var userId = refreshTokenEntry.UserId;
-            this.refreshTokensList.Remove(refreshToken);
 
             return this.CreateTokensPair(userId);
         }

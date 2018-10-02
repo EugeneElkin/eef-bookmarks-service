@@ -6,6 +6,6 @@
     public interface ITokenService
     {
         JsonWebToken CreateAccessToken(User user);
-        JsonWebToken UpdateAccessToken(string refreshToken);
+        JsonWebToken UpdateAccessToken(string userId, string refreshToken);
     }
 }
