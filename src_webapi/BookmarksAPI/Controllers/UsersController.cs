@@ -35,7 +35,7 @@
             try
             {
                 user.Id = Guid.NewGuid().ToString();
-                await this.userService.CreateAsync(user, newUser.Password);
+                await this.userService.Create(user, newUser.Password);
                 return Ok();
             }
             catch (CustomException ex)
@@ -51,7 +51,7 @@
         {
             try
             {
-                var dbUser = await this.userService.AuthenticateAsync(authenticatingUser.UserName, authenticatingUser.Password);
+                var dbUser = await this.userService.Authenticate(authenticatingUser.UserName, authenticatingUser.Password);
                 var token = this.tokenService.CreateAccessToken(dbUser);
 
                 return Ok(
@@ -74,7 +74,7 @@
         }
 
         [AllowAnonymous]
-        // POST: api/users/newtokens
+        // POST: api/users/newtoken
         [HttpPost("newtoken")]
         public async Task<IActionResult> RefreshTokens([FromBody]TokenRequestViewModel tokenRequest)
         {

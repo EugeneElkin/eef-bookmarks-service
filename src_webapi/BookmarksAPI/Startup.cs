@@ -6,7 +6,6 @@
     using BookmarksAPI.Services;
     using BookmarksAPI.Services.Interfaces;
     using DataWorkShop;
-    using DataWorkShop.Extensions;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -52,7 +51,7 @@
                     {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = context.Principal.Identity.Name;
-                        var user = await userService.GetByIdAsync(userId);
+                        var user = await userService.GetById(userId);
                         if (user == null)
                         {
                             // Return unauthorized if user no longer exists
@@ -91,6 +90,7 @@
 
                 if (env.IsDevelopment())
                 {
+                    var userService = serviceScope.ServiceProvider.GetService<IUserService>();
                     // Seed the database.
                     context.EnsureSeedData();
                 }

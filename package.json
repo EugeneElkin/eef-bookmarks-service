@@ -1,0 +1,21 @@
+{
+  "name": "eef-bookmarks-service",
+  "version": "1.0.0",
+  "description": "Service to store and access saved bookmarks (links) from everywhere on every device",
+  "main": "index.ts",
+  "scripts": {
+    "api-compile": "Msbuild ./src_webapi/BookmarksAPI.sln /t:Restore;Rebuild /p:Configuration=Release /p:Platform=\"any cpu\"",
+    "api-build": "Msbuild ./src_webapi/BookmarksAPI/BookmarksAPI.csproj /p:Configuration=Release /p:Platform=\"any cpu\" /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDestination=./dist_webapi",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EugeneElkin/eef-bookmarks-service.git"
+  },
+  "author": "Evgenii Elkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EugeneElkin/eef-bookmarks-service/issues"
+  },
+  "homepage": "https://github.com/EugeneElkin/eef-bookmarks-service#readme"
+}

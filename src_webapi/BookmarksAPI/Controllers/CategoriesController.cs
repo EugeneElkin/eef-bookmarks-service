@@ -25,12 +25,9 @@
         }
 
         // GET: api/Categories
-        [HttpGet]
-        public async Task<IActionResult> GetCategories(string orderByField = null, bool isDescending = false, int? pageSize = null, int? pageAt = null)
+        [HttpGet("root")]
+        public async Task<IActionResult> GetRootCategories(string orderByField = null, bool isDescending = false)
         {
-            // TODO: show data regarding user identity
-            // this.User.Identity.Name;
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -41,9 +38,11 @@
                 {
                     orderByField = orderByField,
                     isDescending = isDescending,
-                    pageAt = pageAt,
-                    pageSize = pageSize
+                    filterExpr = (rec) => rec.UserId == this.User.Identity.Name && rec.Parent == null,
+                    navigationProperties = new string[] { "Categories", "Bookmarks" }
                 }).Execute();
+
+            // TODO: think about loading modes: complete load or by pieces
 
             var sanitizedCategories = Mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(categories);
 

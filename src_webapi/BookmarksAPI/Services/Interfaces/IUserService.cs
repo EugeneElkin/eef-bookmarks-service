@@ -5,10 +5,10 @@
 
     public interface IUserService
     {
-        Task<User> GetByIdAsync(string id);
+        Task<User> GetById(string id);
 
-        Task<User> CreateAsync(User user, string password);
+        Task<User> Create(User user, string password);
 
-        Task<User> AuthenticateAsync(string userName, string password);
+        Task<User> Authenticate(string userName, string password);
     }
 }

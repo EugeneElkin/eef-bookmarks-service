@@ -36,9 +36,13 @@ namespace DataWorkShop.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookmarks");
                 });
@@ -58,9 +62,13 @@ namespace DataWorkShop.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -96,6 +104,10 @@ namespace DataWorkShop.Migrations
                     b.HasOne("DataWorkShop.Entities.Category", "Category")
                         .WithMany("Bookmarks")
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("DataWorkShop.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DataWorkShop.Entities.Category", b =>
@@ -103,6 +115,10 @@ namespace DataWorkShop.Migrations
                     b.HasOne("DataWorkShop.Entities.Category", "Parent")
                         .WithMany("Categories")
                         .HasForeignKey("ParentId");
+
+                    b.HasOne("DataWorkShop.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

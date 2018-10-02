@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataWorkShop.Migrations
 {
     [DbContext(typeof(BookmarksDbContext))]
-    [Migration("20180928070403_InitialCreate")]
+    [Migration("20181002183639_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,9 +38,13 @@ namespace DataWorkShop.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookmarks");
                 });
@@ -60,9 +64,13 @@ namespace DataWorkShop.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -98,6 +106,10 @@ namespace DataWorkShop.Migrations
                     b.HasOne("DataWorkShop.Entities.Category", "Category")
                         .WithMany("Bookmarks")
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("DataWorkShop.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DataWorkShop.Entities.Category", b =>
@@ -105,6 +117,10 @@ namespace DataWorkShop.Migrations
                     b.HasOne("DataWorkShop.Entities.Category", "Parent")
                         .WithMany("Categories")
                         .HasForeignKey("ParentId");
+
+                    b.HasOne("DataWorkShop.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

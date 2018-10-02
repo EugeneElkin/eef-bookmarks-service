@@ -12,6 +12,10 @@
                 .ForSourceMember(sm => sm.RowVersion, opt => opt.Ignore())
                 .ForSourceMember(sm => sm.Parent, opt => opt.Ignore());
 
+            CreateMap<Bookmark, BookmarkViewModel>()
+                .ForSourceMember(sm => sm.RowVersion, opt => opt.Ignore())
+                .ForSourceMember(sm => sm.CategoryId, opt => opt.Ignore());
+
             CreateMap<NewUserViewModel, User>()
                 .ForSourceMember(sm => sm.Password, opt => opt.Ignore());
         }

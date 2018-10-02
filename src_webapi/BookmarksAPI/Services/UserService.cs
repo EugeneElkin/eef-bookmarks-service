@@ -21,13 +21,22 @@
             this.context = context;
         }
 
-        public async Task<User> GetByIdAsync(string id)
+        internal static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            var user = await new ReceivingInstruction<User, string>(this.context, id).Execute();
-            return user;
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
 
-        public async Task<User> AuthenticateAsync(string userName, string password)
+        public async Task<User> GetById(string id)
+        {
+            var dbUser = await new ReceivingInstruction<User, string>(this.context, id).Execute();
+            return dbUser;
+        }
+
+        public async Task<User> Authenticate(string userName, string password)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -40,7 +49,7 @@
             }
 
             var dbUser = (await new ReceivingListInstruction<User>(this.context, new ListInstructionParams<User> {
-                filterExpr = usr => usr.UserName == userName
+                filterExpr = usr => usr.UserName == userName && usr.Status == UserStatusType.Active
             }).Execute()).FirstOrDefault();
 
             // Check user existence
@@ -58,7 +67,7 @@
             return dbUser;
         }
 
-        public async Task<User> CreateAsync(User newUser, string password)
+        public async Task<User> Create(User newUser, string password)
         {
             if (string.IsNullOrWhiteSpace(newUser.UserName))
             {
@@ -80,7 +89,7 @@
             }
 
             byte[] passwordHash, passwordSalt;
-            this.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            UserService.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             newUser.PasswordHash = passwordHash;
             newUser.PasswordSalt = passwordSalt;
@@ -90,15 +99,6 @@
 
             // TODO: add registration confirmation
             return createdUser;
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
         }
 
         private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
