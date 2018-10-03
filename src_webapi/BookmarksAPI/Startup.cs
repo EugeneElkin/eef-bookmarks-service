@@ -90,7 +90,6 @@
 
                 if (env.IsDevelopment())
                 {
-                    var userService = serviceScope.ServiceProvider.GetService<IUserService>();
                     // Seed the database.
                     context.EnsureSeedData();
                 }

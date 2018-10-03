@@ -34,7 +34,6 @@
 
             try
             {
-                user.Id = Guid.NewGuid().ToString();
                 await this.userService.Create(user, newUser.Password);
                 return Ok();
             }
