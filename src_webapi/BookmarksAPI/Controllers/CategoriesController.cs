@@ -7,6 +7,7 @@
     using BookmarksAPI.Models;
     using DataWorkShop;
     using DataWorkShop.Entities;
+    using EEFApps.ApiInstructions.DataInstructions.Exceptions;
     using EEFApps.ApiInstructions.DataInstructions.Instructions;
     using EEFApps.ApiInstructions.DataInstructions.Instructions.Structures;
     using Microsoft.AspNetCore.Authorization;
@@ -40,7 +41,7 @@
                 var categories = await this.LoadCategoriesByLevel(categoryId, orderByField, isDescending);
                 return Ok(categories);
             }
-            catch (CustomException ex)
+            catch (InstructionException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -60,7 +61,7 @@
                 var categories = await this.LoadCategoriesByLevel(null, orderByField, isDescending);
                 return Ok(categories);
             }
-            catch (CustomException ex)
+            catch (InstructionException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -82,7 +83,7 @@
                 var createdCategory = await new CreationInstruction<Category>(this.context, categoryEntity).Execute();
                 return CreatedAtAction("GetCategories", new { id = createdCategory.Id }, Mapper.Map<Category, CategoryViewModel>(createdCategory));
             }
-            catch (CustomException ex)
+            catch (InstructionException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -92,9 +93,52 @@
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchCategory([FromRoute] string id, [FromBody] JsonPatchDocument<Category> patchingCategory)
         {
-            // TODO: check that category belongs to user
-            await new PatchInstruction<Category, string>(this.context, id, patchingCategory).Execute();
-            return NoContent();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await new PatchUserContextedInstruction<Category, string>(this.context,
+                    new PatchInstructionParams<Category, string>
+                    {
+                        id = id,
+                        deltaEntity = patchingCategory,
+                        userId = this.User.Identity.Name
+                    }).Execute();
+                return NoContent();
+            }
+            catch (InstructionException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // DELETE: api/categories/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] string id, string rowVersion)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                // TODO: delete in user context only
+                await new RemovalOptimizedInstruction<Category, string>(this.context, 
+                    new RemovalInstructionParams<string>()
+                    {
+                        id = id,
+                        base64rowVersion = rowVersion
+                    }).Execute();
+                return Ok();
+            }
+            catch(InstructionException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
 
@@ -112,17 +156,5 @@
 
             return sanitizedCategories;
         }
-
-        //// PUT: api/categories/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE: api/categories/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

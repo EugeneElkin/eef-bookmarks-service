@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using EEFApps.ApiInstructions.BaseEntities.Entities;
 
-    public class Category : BaseEntity<string>
+    public class Category : BaseEntityWithUserContext<string>
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -13,7 +13,6 @@
         [ForeignKey("ParentId")]
         public Category Parent { get; set; }
 
-        public string UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
 
