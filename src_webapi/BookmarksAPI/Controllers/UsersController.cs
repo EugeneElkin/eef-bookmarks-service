@@ -30,6 +30,11 @@
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]NewUserViewModel newUser)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = Mapper.Map<User>(newUser);
 
             try
@@ -48,6 +53,11 @@
         [HttpPost("token")]
         public async Task<IActionResult> Authenticate([FromBody]AuthenticatingUserViewModel authenticatingUser)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var dbUser = await this.userService.Authenticate(authenticatingUser.UserName, authenticatingUser.Password);
@@ -77,6 +87,11 @@
         [HttpPost("newtoken")]
         public async Task<IActionResult> RefreshTokens([FromBody]TokenRequestViewModel tokenRequest)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var tokenInfo = await Task.FromResult(this.tokenService.UpdateAccessToken(tokenRequest.UserId, tokenRequest.RefreshToken));

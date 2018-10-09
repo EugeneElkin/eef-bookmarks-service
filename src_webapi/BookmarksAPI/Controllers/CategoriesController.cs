@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoMapper;
-    using BookmarksAPI.Exceptions;
     using BookmarksAPI.Models;
     using DataWorkShop;
     using DataWorkShop.Entities;
@@ -31,11 +30,6 @@
         [HttpGet("{categoryId}")]
         public async Task<IActionResult> GetCategories([FromRoute] string categoryId, string orderByField = null, bool isDescending = false)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 var categories = await this.LoadCategoriesByLevel(categoryId, orderByField, isDescending);
@@ -43,7 +37,7 @@
             }
             catch (InstructionException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
         }
 
@@ -51,11 +45,6 @@
         [HttpGet("root")]
         public async Task<IActionResult> GetCategories(string orderByField = null, bool isDescending = false)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 var categories = await this.LoadCategoriesByLevel(null, orderByField, isDescending);
@@ -63,7 +52,7 @@
             }
             catch (InstructionException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
         }
 
@@ -85,7 +74,7 @@
             }
             catch (InstructionException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
         }
 
@@ -100,18 +89,21 @@
 
             try
             {
-                await new PatchUserContextedInstruction<Category, string>(this.context,
+                await new PatchUserContextedInstruction<Category, string>(
+                    this.context,
                     new PatchInstructionParams<Category, string>
                     {
                         id = id,
-                        deltaEntity = patchingCategory,
-                        userId = this.User.Identity.Name
-                    }).Execute();
+                        deltaEntity = patchingCategory
+                    },
+                    this.User.Identity.Name)
+                    .Execute();
+
                 return NoContent();
             }
             catch (InstructionException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
         }
 
@@ -119,38 +111,46 @@
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] string id, string rowVersion)
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(rowVersion))
             {
-                return BadRequest(ModelState);
+                return BadRequest("The request must contain \"?rowversion=[timestamp]\" parameter!");
             }
 
             try
             {
-                // TODO: delete in user context only
-                await new RemovalOptimizedInstruction<Category, string>(this.context, 
+                // TODO: Doesn't work with recurcive deletion because the same reference issue
+                // Solution: may be removed recursively manually
+                await new RemovalOptimizedUserContextedInstruction<Category, string>(
+                    this.context,
                     new RemovalInstructionParams<string>()
                     {
                         id = id,
                         base64rowVersion = rowVersion
-                    }).Execute();
+                    },
+                    this.User.Identity.Name)
+                    .Execute();
+
                 return Ok();
             }
-            catch(InstructionException ex)
+            catch (InstructionException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
         }
 
 
         private async Task<IEnumerable<CategoryViewModel>> LoadCategoriesByLevel(string level, string orderByField, bool isDescending)
         {
-            var categories = await new ReceivingListInstruction<Category>(this.context,
-               new ListInstructionParams<Category>
-               {
-                   orderByField = orderByField,
-                   isDescending = isDescending,
-                   filterExpr = (rec) => rec.UserId == this.User.Identity.Name && rec.ParentId == level
-               }).Execute();
+            // TODO: extend ReceivingInstruction instead of using list instruction
+            var categories = await new ReceivingListInstruction<Category>(
+                this.context,
+                new ListInstructionParams<Category>
+                {
+                    orderByField = orderByField,
+                    isDescending = isDescending,
+                    filterExpr = (rec) => rec.UserId == this.User.Identity.Name && rec.ParentId == level
+                })
+               .Execute();
 
             var sanitizedCategories = Mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(categories);
 
