@@ -28,12 +28,22 @@
 
         // GET: api/categories/{categoryId}
         [HttpGet("{categoryId}")]
-        public async Task<IActionResult> GetCategories([FromRoute] string categoryId, string orderByField = null, bool isDescending = false)
+        public async Task<IActionResult> GetCategory([FromRoute] string categoryId)
         {
             try
             {
-                var categories = await this.LoadCategoriesByLevel(categoryId, orderByField, isDescending);
-                return Ok(categories);
+                var category = await new ReceivingUserConextedInstruction<Category, string>(
+                    this.context,
+                    new ReceivingInstructionParams<string>
+                    {
+                        Id = categoryId,
+                        NavigationProperties = new string[] {"Categories", "Bookmarks"}
+                    },
+                    this.User.Identity.Name)
+                    .Execute();
+
+                var sanitizedCategory = Mapper.Map<Category, CategoryViewModel>(category);
+                return Ok(sanitizedCategory);
             }
             catch (InstructionException ex)
             {
@@ -43,12 +53,22 @@
 
         // GET: api/categories/root
         [HttpGet("root")]
-        public async Task<IActionResult> GetCategories(string orderByField = null, bool isDescending = false)
+        public async Task<IActionResult> GetRootCategories(string orderByField = null, bool isDescending = false)
         {
             try
             {
-                var categories = await this.LoadCategoriesByLevel(null, orderByField, isDescending);
-                return Ok(categories);
+                var categories = await new ReceivingListInstruction<Category>(
+                this.context,
+                new ListInstructionParams<Category>
+                {
+                    OrderByField = orderByField,
+                    IsDescending = isDescending,
+                    FilterExpr = (rec) => rec.UserId == this.User.Identity.Name && rec.ParentId == null
+                })
+               .Execute();
+
+                var sanitizedCategories = Mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(categories);
+                return Ok(sanitizedCategories);
             }
             catch (InstructionException ex)
             {
@@ -93,8 +113,8 @@
                     this.context,
                     new PatchInstructionParams<Category, string>
                     {
-                        id = id,
-                        deltaEntity = patchingCategory
+                        Id = id,
+                        DeltaEntity = patchingCategory
                     },
                     this.User.Identity.Name)
                     .Execute();
@@ -124,8 +144,8 @@
                     this.context,
                     new RemovalInstructionParams<string>()
                     {
-                        id = id,
-                        base64rowVersion = rowVersion
+                        Id = id,
+                        Base64RowVersion = rowVersion
                     },
                     this.User.Identity.Name)
                     .Execute();
@@ -136,25 +156,6 @@
             {
                 return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
-        }
-
-
-        private async Task<IEnumerable<CategoryViewModel>> LoadCategoriesByLevel(string level, string orderByField, bool isDescending)
-        {
-            // TODO: extend ReceivingInstruction instead of using list instruction
-            var categories = await new ReceivingListInstruction<Category>(
-                this.context,
-                new ListInstructionParams<Category>
-                {
-                    orderByField = orderByField,
-                    isDescending = isDescending,
-                    filterExpr = (rec) => rec.UserId == this.User.Identity.Name && rec.ParentId == level
-                })
-               .Execute();
-
-            var sanitizedCategories = Mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(categories);
-
-            return sanitizedCategories;
         }
     }
 }

@@ -32,7 +32,13 @@
 
         public async Task<User> GetById(string id)
         {
-            var dbUser = await new ReceivingInstruction<User, string>(this.context, id).Execute();
+            var dbUser = await new ReceivingInstruction<User, string>(
+                this.context,
+                new ReceivingInstructionParams<string>()
+                {
+                    Id = id
+                }
+                ).Execute();
             return dbUser;
         }
 
@@ -48,8 +54,9 @@
                 throw new CustomException("Password is required");
             }
 
-            var dbUser = (await new ReceivingListInstruction<User>(this.context, new ListInstructionParams<User> {
-                filterExpr = usr => usr.UserName == userName && usr.Status == UserStatusType.Active
+            var dbUser = (await new ReceivingListInstruction<User>(this.context, new ListInstructionParams<User>
+            {
+                FilterExpr = usr => usr.UserName == userName && usr.Status == UserStatusType.Active
             }).Execute()).FirstOrDefault();
 
             // Check user existence
@@ -79,8 +86,9 @@
                 throw new CustomException("Password is required");
             }
 
-            var numberOfExistingUsers = await new ReceivingCountedInstruction<User>(this.context, new ListInstructionParams<User> {
-                filterExpr = usr => usr.UserName == newUser.UserName
+            var numberOfExistingUsers = await new ReceivingCountedListInstruction<User>(this.context, new ListInstructionParams<User>
+            {
+                FilterExpr = usr => usr.UserName == newUser.UserName
             }).Execute();
 
             if (numberOfExistingUsers > 0)

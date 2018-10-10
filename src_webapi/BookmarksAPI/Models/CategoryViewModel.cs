@@ -9,6 +9,7 @@ namespace BookmarksAPI.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<BookmarkViewModel> Bookmarks { get; set; }
+        public ICollection<CategoryViewModel> Categories { get; set; }
         public byte[] RowVersion { get; set; }
     }
 }
