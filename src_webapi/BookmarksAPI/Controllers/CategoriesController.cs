@@ -32,7 +32,7 @@
         {
             try
             {
-                var category = await new ReceivingUserConextedInstruction<Category, string>(
+                var category = await new ReceivingUserConextedInstruction<Category, string, string>(
                     this.context,
                     new ReceivingInstructionParams<string>
                     {
@@ -109,7 +109,7 @@
 
             try
             {
-                await new PatchUserContextedInstruction<Category, string>(
+                await new PatchUserContextedInstruction<Category, string, string>(
                     this.context,
                     new PatchInstructionParams<Category, string>
                     {
@@ -129,23 +129,15 @@
 
         // DELETE: api/categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] string id, string rowVersion)
+        public async Task<IActionResult> Delete([FromRoute] string id)
         {
-            if (string.IsNullOrWhiteSpace(rowVersion))
-            {
-                return BadRequest("The request must contain \"?rowversion=[timestamp]\" parameter!");
-            }
-
             try
             {
-                // TODO: Doesn't work with recurcive deletion because the same reference issue
-                // Solution: may be removed recursively manually
-                await new RemovalOptimizedUserContextedInstruction<Category, string>(
+                await new RemovalRecursiveUserContextedInstruction<Category, string, string>(
                     this.context,
                     new RemovalInstructionParams<string>()
                     {
-                        Id = id,
-                        Base64RowVersion = rowVersion
+                        Id = id
                     },
                     this.User.Identity.Name)
                     .Execute();

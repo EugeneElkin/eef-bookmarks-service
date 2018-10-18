@@ -103,7 +103,8 @@ namespace DataWorkShop.Migrations
                 {
                     b.HasOne("DataWorkShop.Entities.Category", "Category")
                         .WithMany("Bookmarks")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataWorkShop.Entities.User", "User")
                         .WithMany()

@@ -31,10 +31,10 @@ namespace DataWorkShop.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
                     ParentId = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,7 +73,7 @@ namespace DataWorkShop.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Bookmarks_Users_UserId",
                         column: x => x.UserId,

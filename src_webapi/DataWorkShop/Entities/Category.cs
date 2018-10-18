@@ -4,12 +4,11 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using EEFApps.ApiInstructions.BaseEntities.Entities;
 
-    public class Category : BaseEntityWithUserContext<string>
+    public class Category : BaseEntityWithParentUserContexted<string, string>
     {
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public string ParentId { get; set; }
         [ForeignKey("ParentId")]
         public Category Parent { get; set; }
 

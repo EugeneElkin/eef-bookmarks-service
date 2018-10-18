@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataWorkShop.Migrations
 {
     [DbContext(typeof(BookmarksDbContext))]
-    [Migration("20181002183639_InitialCreate")]
+    [Migration("20181017115319_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,8 @@ namespace DataWorkShop.Migrations
                 {
                     b.HasOne("DataWorkShop.Entities.Category", "Category")
                         .WithMany("Bookmarks")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataWorkShop.Entities.User", "User")
                         .WithMany()
