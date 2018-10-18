@@ -90,7 +90,7 @@
                 var categoryEntity = Mapper.Map<NewCategoryViewModel, Category>(newCategory);
                 categoryEntity.UserId = this.User.Identity.Name;
                 var createdCategory = await new CreationInstruction<Category>(this.context, categoryEntity).Execute();
-                return CreatedAtAction("GetCategories", new { id = createdCategory.Id }, Mapper.Map<Category, CategoryViewModel>(createdCategory));
+                return CreatedAtAction("GetCategory", new { categoryId = createdCategory.Id }, Mapper.Map<Category, CategoryViewModel>(createdCategory));
             }
             catch (InstructionException ex)
             {

@@ -12,11 +12,12 @@
                 .ForSourceMember(sm => sm.RowVersion, opt => opt.Ignore())
                 .ForSourceMember(sm => sm.Parent, opt => opt.Ignore());
 
+            CreateMap<Bookmark, BookmarkViewModel>()
+                .ForSourceMember(sm => sm.CategoryId, opt => opt.Ignore());
+
             CreateMap<NewCategoryViewModel, Category>();
 
-            CreateMap<Bookmark, BookmarkViewModel>()
-                .ForSourceMember(sm => sm.RowVersion, opt => opt.Ignore())
-                .ForSourceMember(sm => sm.CategoryId, opt => opt.Ignore());
+            CreateMap<NewBookmarkViewModel, Bookmark>();
 
             CreateMap<NewUserViewModel, User>()
                 .ForSourceMember(sm => sm.Password, opt => opt.Ignore());
