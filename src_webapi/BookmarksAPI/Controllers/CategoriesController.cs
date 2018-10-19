@@ -32,7 +32,7 @@
         {
             try
             {
-                var category = await new ReceivingUserConextedInstruction<Category, string, string>(
+                var category = await new ReceivingUserContextedInstruction<Category, string, string>(
                     this.context,
                     new ReceivingInstructionParams<string>
                     {
@@ -89,7 +89,11 @@
             {
                 var categoryEntity = Mapper.Map<NewCategoryViewModel, Category>(newCategory);
                 categoryEntity.UserId = this.User.Identity.Name;
-                var createdCategory = await new CreationInstruction<Category>(this.context, categoryEntity).Execute();
+                var createdCategory = await new CreationUserContextedInstruction<Category, Category, string, string>(
+                    this.context,
+                    categoryEntity,
+                    categoryEntity.ParentId,
+                    this.User.Identity.Name).Execute();
                 return CreatedAtAction("GetCategory", new { categoryId = createdCategory.Id }, Mapper.Map<Category, CategoryViewModel>(createdCategory));
             }
             catch (InstructionException ex)

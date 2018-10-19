@@ -1,5 +1,6 @@
 ﻿namespace BookmarksAPI.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoMapper;
     using BookmarksAPI.Models;
@@ -30,7 +31,7 @@
         {
             try
             {
-                var bookmark = await new ReceivingUserConextedInstruction<Bookmark, string, string>(
+                var bookmark = await new ReceivingUserContextedInstruction<Bookmark, string, string>(
                     this.context,
                     new ReceivingInstructionParams<string>
                     {
@@ -48,6 +49,31 @@
             }
         }
 
+        // GET: api/bookmarks/root
+        [HttpGet("root")]
+        public async Task<IActionResult> GetRootBookmarks(string orderByField = null, bool isDescending = false)
+        {
+            try
+            {
+                var bookmarks = await new ReceivingListInstruction<Bookmark>(
+                this.context,
+                new ListInstructionParams<Bookmark>
+                {
+                    OrderByField = orderByField,
+                    IsDescending = isDescending,
+                    FilterExpr = (rec) => rec.UserId == this.User.Identity.Name && rec.CategoryId == null
+                })
+               .Execute();
+
+                var sanitizedBookmarks = Mapper.Map<IEnumerable<Bookmark>, IEnumerable<BookmarkViewModel>>(bookmarks);
+                return Ok(sanitizedBookmarks);
+            }
+            catch (InstructionException ex)
+            {
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
+            }
+        }
+
         // POST: api/bookmarks
         [HttpPost]
         public async Task<IActionResult> CreateBookmark([FromBody]NewBookmarkViewModel newBookmark)
@@ -57,12 +83,15 @@
                 return BadRequest(ModelState);
             }
 
-            // TODO: create a new instruction that check context of a parent entity CreationUserContextedInstruction
             try
             {
                 var bookmarkEntity = Mapper.Map<NewBookmarkViewModel, Bookmark>(newBookmark);
                 bookmarkEntity.UserId = this.User.Identity.Name;
-                var createdBookmark = await new CreationInstruction<Bookmark>(this.context, bookmarkEntity).Execute();
+                var createdBookmark = await new CreationUserContextedInstruction<Bookmark, Category, string, string>(
+                    this.context,
+                    bookmarkEntity,
+                    bookmarkEntity.CategoryId,
+                    this.User.Identity.Name).Execute();
                 return CreatedAtAction("GetBookmark", new { bookmarkId = createdBookmark.Id }, Mapper.Map<Bookmark, BookmarkViewModel>(createdBookmark));
             }
             catch (InstructionException ex)
