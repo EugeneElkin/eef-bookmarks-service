@@ -99,5 +99,29 @@
                 return StatusCode((int)(ex.httpStatusCode), ex.Message);
             }
         }
+
+        // DELETE: api/bookmarks/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] string id, string rowVersion)
+        {
+            try
+            {
+                await new RemovalOptimizedUserContextedInstruction<Bookmark, string, string>(
+                    this.context,
+                    new RemovalInstructionParams<string>()
+                    {
+                        Id = id,
+                        Base64RowVersion = rowVersion
+                    },
+                    this.User.Identity.Name)
+                    .Execute();
+
+                return Ok();
+            }
+            catch (InstructionException ex)
+            {
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
+            }
+        }
     }
 }
