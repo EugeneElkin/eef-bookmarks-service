@@ -74,6 +74,30 @@
             }
         }
 
+        // PUT: api/bookmarks/{{bookmarkId}}
+        [HttpPut("{bookmarkId}")]
+        public async Task<IActionResult> UpdateBookmark([FromRoute] string bookmarkId, [FromBody] BookmarkViewModel bookmark)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                // TODO: add a new instruction like a CreateOrUpdateInstruction
+                var sanitizedBookmark = Mapper.Map<BookmarkViewModel, Bookmark>(bookmark);
+                await new UpdateUserContextedInstruction<Bookmark, string, string>(this.context, bookmarkId, sanitizedBookmark, this.User.Identity.Name).Execute();
+            }
+            catch (InstructionException ex)
+            {
+                return StatusCode((int)(ex.httpStatusCode), ex.Message);
+            }
+
+            return NoContent();
+        }
+
+
         // POST: api/bookmarks
         [HttpPost]
         public async Task<IActionResult> CreateBookmark([FromBody]NewBookmarkViewModel newBookmark)

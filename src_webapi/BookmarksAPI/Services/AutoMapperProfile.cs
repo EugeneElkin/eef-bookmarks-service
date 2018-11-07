@@ -19,6 +19,8 @@
 
             CreateMap<NewBookmarkViewModel, Bookmark>();
 
+            CreateMap<BookmarkViewModel, Bookmark>();
+
             CreateMap<NewUserViewModel, User>()
                 .ForSourceMember(sm => sm.Password, opt => opt.Ignore());
         }
