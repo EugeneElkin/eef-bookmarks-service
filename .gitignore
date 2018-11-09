@@ -6,6 +6,7 @@
 # Project's excludes
 dist/
 dist_api/
+.tmp/
 
 # User-specific files
 *.suo
