@@ -154,7 +154,7 @@
         <sites>
             <site name="BookmarksAPI" id="1" serverAutoStart="true">
                 <application path="/">
-                    <virtualDirectory path="/" physicalPath="[PUBLISHED_API_PATH]" />
+                    <virtualDirectory path="/" physicalPath="[PUBLISHED_API_ABSOLUTE_PATH]" />
                 </application>
                 <bindings>
                     <binding protocol="http" bindingInformation=":5555:localhost" />
