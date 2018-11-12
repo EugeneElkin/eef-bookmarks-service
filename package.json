@@ -8,7 +8,7 @@
     "api-build": "Msbuild ./src_webapi/BookmarksAPI/BookmarksAPI.csproj /p:Configuration=Release /p:Platform=\"any cpu\" /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDestination=./dist_webapi",
     "api-prepare-config": "node ./tools/api-prepare-config.js",
     "api-express-deploy": "iisexpress /config:./.tmp/apihost.config /siteid:1",
-    "api-start": "api-prepare-config && api-express-deploy",
+    "api-start": "npm run api-prepare-config && npm run api-express-deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
