@@ -5,11 +5,15 @@
   "main": "index.ts",
   "scripts": {
     "api-compile": "Msbuild ./src_webapi/BookmarksAPI.sln /t:Restore;Rebuild /p:Configuration=Release /p:Platform=\"any cpu\"",
-    "api-build": "Msbuild ./src_webapi/BookmarksAPI/BookmarksAPI.csproj /p:Configuration=Release /p:Platform=\"any cpu\" /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDestination=./dist_webapi",
-    "api-prepare-config": "node ./tools/api-prepare-config.js",
-    "api-express-deploy": "iisexpress /config:./.tmp/apihost.config /siteid:1",
-    "api-start": "npm run api-prepare-config && npm run api-express-deploy",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "api-publish": "Msbuild ./src_webapi/BookmarksAPI/BookmarksAPI.csproj /p:Configuration=Release /p:Platform=\"any cpu\" /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDestination=./.dist_webapi",
+    "api-build-server-config": "node ./tools/api-prepare-config.js",
+    "api-run-server": "start iisexpress /config:./.tmp/apihost.config /siteid:1",
+    "api-start": "npm run api-build-server-config && npm run api-run-server",
+    "web-publish": "webpack",
+    "web-run-server:dev": "webpack-dev-server",
+    "web-start": "npm run web-run-server:dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tslint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
@@ -21,7 +25,25 @@
     "url": "https://github.com/EugeneElkin/eef-bookmarks-service/issues"
   },
   "homepage": "https://github.com/EugeneElkin/eef-bookmarks-service#readme",
+  "devDependencies": {
+    "app-root-path": "^2.1.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^1.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^0.23.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
   "dependencies": {
-    "app-root-path": "^2.1.0"
+    "@types/react": "^16.1.0",
+    "@types/react-dom": "^16.0.4",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.1.1"
   }
 }

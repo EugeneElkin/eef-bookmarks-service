@@ -3,7 +3,7 @@
 const fs = require('fs');
 const appRoot = require('app-root-path');
 
-const apiPhysicalPath = appRoot.path + "\\dist_api";
+const apiPhysicalPath = appRoot.path + "\\.dist_api";
 const tmpDir = appRoot.path + "\\.tmp";
 const tmpLogsDir = tmpDir + "\\Logs";
 const tmpTraceLogsDir = tmpDir + "\\TraceLogs";

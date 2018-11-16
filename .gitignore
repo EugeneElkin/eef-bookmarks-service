@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Project's excludes
-dist/
-dist_api/
+.dist/
+.dist_api/
 .tmp/
 
 # User-specific files
