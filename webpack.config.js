@@ -37,7 +37,8 @@ module.exports = {
     externals: {
         "react": "React",
         "react-dom": "ReactDOM",
-        "react-redux": "ReactRedux"
+        "react-redux": "ReactRedux",
+        "redux": "Redux"
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -45,29 +46,34 @@ module.exports = {
             // Load a custom template (lodash by default see the FAQ for details)
             template: './templates/index.html'
         }),
-        new CopyWebpackPlugin([
+        new CopyWebpackPlugin(
+            [{
+                from: './templates/assets/manifest.json',
+                to: 'assets',
+                toType: 'dir'
+            },
             {
-                from: './assets/**/*',
-                to: ''
-            }
-        ]),
-        new CopyWebpackPlugin([
+                from: './templates/assets/favicon.ico',
+                to: 'assets',
+                toType: 'dir'
+            },
             {
-                from: './node_modules/react/umd/react.development.js',
+                from: './node_modules/react/umd/react.production.min.js',
                 to: 'externals',
                 toType: 'dir'
-            }
-        ]),
-        new CopyWebpackPlugin([
+            },        
             {
-                from: './node_modules/react-dom/umd/react-dom.development.js',
+                from: './node_modules/react-dom/umd/react-dom.production.min.js',
                 to: 'externals',
                 toType: 'dir'
-            }
-        ]),
-        new CopyWebpackPlugin([
+            },
             {
-                from: './node_modules/react-redux/dist/react-redux.js',
+                from: './node_modules/react-redux/dist/react-redux.min.js',
+                to: 'externals',
+                toType: 'dir'
+            },
+            {
+                from: './node_modules/redux/dist/redux.min.js',
                 to: 'externals',
                 toType: 'dir'
             }
