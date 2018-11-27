@@ -1,3 +1,3 @@
-export type StateProps = {
+export type AppProps = {
     isLoginActive?: boolean | null;
 }

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { LoginComponent } from "./login";
 import { SignupComponent } from "./signup";
-import { store } from "../..";
-import { AppActions } from "../../actions";
 
 export interface IAuthComponentDescriptor {
     isLoginActive?: boolean | null;
+    activateLoginTabAction: () => void;
+    activateSignUpTabAction: () => void;
 }
 
 export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
@@ -13,8 +13,8 @@ export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
         return (
             <div>
                 Login Form!!!
-                <div><a href="#" onClick={() => store.dispatch(AppActions.activateLoginTabAction())}>Login</a></div>
-                <div><a href="#" onClick={() => store.dispatch(AppActions.activateSignUpTabAction())}>Sign Up</a></div>
+                <div><a href="#" onClick={this.props.activateLoginTabAction}>Login</a></div>
+                <div><a href="#" onClick={this.props.activateSignUpTabAction}>Sign Up</a></div>
                 {this.props.isLoginActive ? <LoginComponent /> : <SignupComponent />}
             </div>
         );

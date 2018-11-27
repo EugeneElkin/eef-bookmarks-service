@@ -1,13 +1,23 @@
 import * as React from "react";
 import { AuthComponent } from "./authentication/auth";
 import { connect } from "react-redux";
-import { StateProps } from "../types/stateProps";
+import { Action, Dispatch } from "redux";
+import { AppActions } from "../state/actions";
+import { CombinedReducersEntries } from "../types/combinedReducersEntries";
 
-interface IPageComponentDescriptor {
+export interface IPageComponentDescriptor extends IPageComponentProps, IPageComponentActions {
+}
+
+interface IPageComponentProps {
     isLoginActive?: boolean | null;
 }
 
-class PageComponent extends React.Component<IPageComponentDescriptor> {
+interface IPageComponentActions {
+    activateLoginTabAction: () => void;
+    activateSignUpTabAction: () => void;
+}
+
+export class PageComponent extends React.Component<IPageComponentDescriptor> {
     constructor(props: any) {
         super(props);
     }
@@ -16,17 +26,32 @@ class PageComponent extends React.Component<IPageComponentDescriptor> {
         return (
             <AuthComponent
                 isLoginActive={this.props.isLoginActive}
+                activateLoginTabAction = {this.props.activateLoginTabAction}
+                activateSignUpTabAction = {this.props.activateSignUpTabAction}
             />
         );
     }
 }
 
-const mapStateToProps: (state: StateProps) => IPageComponentDescriptor = (state) => {
+const mapStateToProps: (state: CombinedReducersEntries) => IPageComponentProps = (state) => {
+    console.log(state);
     return {
-        isLoginActive: state ? state.isLoginActive : true
+        isLoginActive: state ? state.appReducer.isLoginActive : true
     }
 };
 
-export const ConnectedPageComponent = connect(
-    mapStateToProps
+const mapDispatchToProps: (dispatch: Dispatch<Action<number>>) => IPageComponentActions = dispatch => {
+    return {
+        activateLoginTabAction: () => {
+            dispatch(AppActions.activateLoginTabAction())
+        },
+        activateSignUpTabAction: () => {
+            dispatch(AppActions.activateSignUpTabAction())
+        }
+    }
+}
+
+export const ConnectedPageComponent: any = connect(
+    mapStateToProps,
+    mapDispatchToProps
 )(PageComponent);
