@@ -12,10 +12,11 @@ export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
     render() {
         return (
             <div className="login-box">
-                Login Form!!!
-                <div><a href="#" onClick={this.props.activateLoginTabAction}>Login</a></div>
-                <div><a href="#" onClick={this.props.activateSignUpTabAction}>Sign Up</a></div>
-                {this.props.isLoginActive ? <LoginComponent /> : <SignupComponent />}
+                <div className="login-cases-grid-container">
+                    <div className="login-cases-login grid-item" onClick={this.props.activateLoginTabAction}>Login</div>
+                    <div className="login-cases-signup grid-item" onClick={this.props.activateSignUpTabAction}>Sign Up</div>
+                </div>
+                <div className="content">{this.props.isLoginActive ? <LoginComponent /> : <SignupComponent />}</div>
             </div>
         );
     }
