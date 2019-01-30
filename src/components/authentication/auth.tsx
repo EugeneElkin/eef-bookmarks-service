@@ -11,7 +11,7 @@ export interface IAuthComponentDescriptor {
 export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
     render() {
         return (
-            <div>
+            <div className="login-box">
                 Login Form!!!
                 <div><a href="#" onClick={this.props.activateLoginTabAction}>Login</a></div>
                 <div><a href="#" onClick={this.props.activateSignUpTabAction}>Sign Up</a></div>

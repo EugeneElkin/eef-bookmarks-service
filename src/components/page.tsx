@@ -24,11 +24,13 @@ export class PageComponent extends React.Component<IPageComponentDescriptor> {
 
     render() {
         return (
-            <AuthComponent
-                isLoginActive={this.props.isLoginActive}
-                activateLoginTabAction = {this.props.activateLoginTabAction}
-                activateSignUpTabAction = {this.props.activateSignUpTabAction}
-            />
+            <React.Fragment>
+                <AuthComponent
+                    isLoginActive={this.props.isLoginActive}
+                    activateLoginTabAction={this.props.activateLoginTabAction}
+                    activateSignUpTabAction={this.props.activateSignUpTabAction}
+                />
+            </React.Fragment>
         );
     }
 }

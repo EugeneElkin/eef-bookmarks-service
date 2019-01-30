@@ -26,6 +26,10 @@
   },
   "homepage": "https://github.com/EugeneElkin/eef-bookmarks-service#readme",
   "devDependencies": {
+    "@types/react": "^16.1.0",
+    "@types/react-dom": "^16.0.4",
+    "@types/react-redux": "^6.0.9",
+    "@types/redux": "^3.6.0",
     "app-root-path": "^2.1.0",
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^4.6.0",
@@ -40,10 +44,6 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
-    "@types/react": "^16.1.0",
-    "@types/react-dom": "^16.0.4",
-    "@types/react-redux": "^6.0.9",
-    "@types/redux": "^3.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.1.1",
