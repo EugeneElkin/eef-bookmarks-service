@@ -7,23 +7,42 @@ ol, ul {
   padding-left: 30px;
 }
 
+/* auth.tsx styles */
 .login-box {
     border: 1px solid black;
     border-radius: 8px;
     width: 500px;
+    height: 200px;
 }
-
 .login-box .content {
     padding: 10px;
 }
-
-.login-cases-grid-container {
+.login-tabs-grid-container {
     display: grid;
     grid-template-columns: auto auto;
 }
-
-.login-cases-grid-container .grid-item {
+.login-tabs-grid-container .grid-item {
     text-align: center;
     padding: 5px;
     cursor: pointer;
+    color: #474B24;
+    font-weight: bold;
+    background-color: #C1CAD6;
+    border-bottom: 1px solid black;
 }
+.login-tabs-grid-container .grid-item:hover {
+    color: #D16666;
+}
+.login-tabs-grid-container .active {
+    background-color: white;
+    border-bottom: none;
+}
+.tab-signup {
+    border-radius: 0 8px 0 0;   
+}
+.tab-login {
+    border-radius: 8px 0 0 0;
+    border-collapse: collapse;
+    border-right: 1px solid black;
+}
+/* ****** */

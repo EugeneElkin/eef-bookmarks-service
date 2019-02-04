@@ -36,7 +36,6 @@ export class PageComponent extends React.Component<IPageComponentDescriptor> {
 }
 
 const mapStateToProps: (state: CombinedReducersEntries) => IPageComponentProps = (state) => {
-    console.log(state);
     return {
         isLoginActive: state ? state.appReducer.isLoginActive : true
     }

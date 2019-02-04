@@ -9,7 +9,6 @@ const initialAppReducerState: AppProps = {
   }
 
 const appReducer: Reducer = (state: AppProps = initialAppReducerState, action: AnyAction) => {
-    console.log(state)
     switch (action.type) {
         case ActionType.ACTIVATE_SIGNUP_TAB:
             const result1 = {
