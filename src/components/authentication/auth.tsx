@@ -18,7 +18,7 @@ export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
                     <div className={"tab-signup grid-item" + (!this.props.isLoginActive ? " active" : "")}
                         onClick={this.props.activateSignUpTabAction}>SIGN UP</div>
                 </div>
-                <div className="content">{this.props.isLoginActive ? <LoginComponent /> : <SignupComponent />}</div>
+                {this.props.isLoginActive ? <LoginComponent /> : <SignupComponent />}
             </div>
         );
     }

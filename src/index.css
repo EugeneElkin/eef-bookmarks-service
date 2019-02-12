@@ -1,26 +1,29 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
 }
 
 ol, ul {
-  padding-left: 30px;
+    padding-left: 30px;
 }
 
 /* auth.tsx styles */
+
 .login-box {
     border: 1px solid black;
+    display: grid;
+    grid-template-columns: auto;
     border-radius: 8px;
     width: 500px;
     height: 200px;
 }
-.login-box .content {
-    padding: 10px;
-}
+
 .login-tabs-grid-container {
     display: grid;
+    height: 30px;
     grid-template-columns: auto auto;
 }
+
 .login-tabs-grid-container .grid-item {
     text-align: center;
     padding: 5px;
@@ -30,19 +33,72 @@ ol, ul {
     background-color: #C1CAD6;
     border-bottom: 1px solid black;
 }
+
 .login-tabs-grid-container .grid-item:hover {
     color: #D16666;
 }
+
 .login-tabs-grid-container .active {
     background-color: white;
     border-bottom: none;
 }
+
 .tab-signup {
-    border-radius: 0 8px 0 0;   
+    border-radius: 0 8px 0 0;
 }
+
 .tab-login {
     border-radius: 8px 0 0 0;
     border-collapse: collapse;
     border-right: 1px solid black;
 }
+
+/* ****** */
+
+/* login.tsx styles */
+
+.login-form-grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    grid-template-areas: 
+    "usrlabel usrfld"
+    "pswlabel pswfld"
+    "btn btn";
+    height: 170px;
+    justify-items: end;
+    align-content: center;
+    justify-content: center;
+}
+
+.login-form-grid-container .grid-item-username-label {
+    grid-area: usrlabel;
+    justify-self: start;
+}
+
+.login-form-grid-container .grid-item-username {
+    grid-area: usrfld;
+}
+
+.login-form-grid-container .grid-item-password-label {
+    grid-area: pswlabel;
+    justify-self: start;
+}
+
+.login-form-grid-container .grid-item-password {
+    grid-area: pswfld;
+}
+
+.login-form-grid-container .grid-item-button {
+    grid-area: btn;
+}
+
+/* ****** */
+
+/* signup.tsx styles */
+
+.signup-form-grid-container {
+    padding: 10px;
+}
+
 /* ****** */
