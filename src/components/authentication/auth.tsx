@@ -6,6 +6,7 @@ export interface IAuthComponentDescriptor {
     isLoginActive?: boolean | null;
     activateLoginTabAction: () => void;
     activateSignUpTabAction: () => void;
+    loginToServiceAction: () => void;
 }
 
 export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
@@ -18,7 +19,7 @@ export class AuthComponent extends React.Component<IAuthComponentDescriptor> {
                     <div className={"tab-signup grid-item" + (!this.props.isLoginActive ? " active" : "")}
                         onClick={this.props.activateSignUpTabAction}>SIGN UP</div>
                 </div>
-                {this.props.isLoginActive ? <LoginComponent /> : <SignupComponent />}
+                {this.props.isLoginActive ? <LoginComponent loginToServiceAction={this.props.loginToServiceAction} /> : <SignupComponent />}
             </div>
         );
     }

@@ -2,7 +2,7 @@ import { Reducer, combineReducers, AnyAction } from "redux";
 import { ActionType } from "./actions";
 import { AuthProps } from "../types/authProps";
 import { AppProps } from "../types/appProps";
-import { CombinedReducersEntries } from "../types/combinedReducersEntries";
+import { ICombinedReducersEntries } from "../types/combinedReducersEntries";
 
 const initialAppReducerState: AppProps = {
     isLoginActive: true
@@ -31,7 +31,7 @@ const authReducer: Reducer = (state: AuthProps, action: AnyAction) => {
     return state ? state : {};
 }
 
-export const rootReducer: Reducer<CombinedReducersEntries> = combineReducers({
+export const rootReducer: Reducer<ICombinedReducersEntries> = combineReducers({
     authReducer,
     appReducer
 })

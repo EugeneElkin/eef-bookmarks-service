@@ -3,7 +3,7 @@ import { AuthComponent } from "./authentication/auth";
 import { connect } from "react-redux";
 import { Action, Dispatch } from "redux";
 import { AppActions } from "../state/actions";
-import { CombinedReducersEntries } from "../types/combinedReducersEntries";
+import { ICombinedReducersEntries } from "../types/combinedReducersEntries";
 
 export interface IPageComponentDescriptor extends IPageComponentProps, IPageComponentActions {
 }
@@ -15,6 +15,7 @@ interface IPageComponentProps {
 interface IPageComponentActions {
     activateLoginTabAction: () => void;
     activateSignUpTabAction: () => void;
+    loginToServiceAction: () => void;
 }
 
 export class PageComponent extends React.Component<IPageComponentDescriptor> {
@@ -29,13 +30,14 @@ export class PageComponent extends React.Component<IPageComponentDescriptor> {
                     isLoginActive={this.props.isLoginActive}
                     activateLoginTabAction={this.props.activateLoginTabAction}
                     activateSignUpTabAction={this.props.activateSignUpTabAction}
+                    loginToServiceAction={this.props.loginToServiceAction}
                 />
             </React.Fragment>
         );
     }
 }
 
-const mapStateToProps: (state: CombinedReducersEntries) => IPageComponentProps = (state) => {
+const mapStateToProps: (state: ICombinedReducersEntries) => IPageComponentProps = (state) => {
     return {
         isLoginActive: state ? state.appReducer.isLoginActive : true
     }
@@ -48,6 +50,10 @@ const mapDispatchToProps: (dispatch: Dispatch<Action<number>>) => IPageComponent
         },
         activateSignUpTabAction: () => {
             dispatch(AppActions.activateSignUpTabAction())
+        },
+        loginToServiceAction: () => {
+            // TODO: make AJAX request and then dispatch action there
+            console.log(255);
         }
     }
 }

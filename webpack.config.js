@@ -38,7 +38,8 @@ module.exports = {
         "react": "React",
         "react-dom": "ReactDOM",
         "react-redux": "ReactRedux",
-        "redux": "Redux"
+        "redux": "Redux",
+        "axios": "Axios"
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -74,6 +75,11 @@ module.exports = {
             },
             {
                 from: './node_modules/redux/dist/redux.min.js',
+                to: 'externals',
+                toType: 'dir'
+            },
+            {
+                from: './node_modules/axios/dist/axios.min.js',
                 to: 'externals',
                 toType: 'dir'
             }

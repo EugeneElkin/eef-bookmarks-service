@@ -7,6 +7,43 @@ ol, ul {
     padding-left: 30px;
 }
 
+/* styles for inputs */
+
+input[type=text] {
+    width: 100%;
+    padding: 3px 5px;
+    box-sizing: border-box;
+}
+input[type=text]:focus {
+    background-color: #EEF7F6;
+}
+input[type=password] {
+    width: 100%;
+    padding: 3px 5px;
+    box-sizing: border-box;
+}
+input[type=password]:focus {
+    background-color: #EEF7F6;
+}
+button {
+    background-color: #C1CAD6;
+    border: none;
+    color: #474B24;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 1px solid #B7C0C3;
+}
+button:hover {
+    background-color: white; /* Green */
+    color: black;
+    cursor: pointer;
+}
+
+/* ****** */
+
 /* auth.tsx styles */
 
 .login-box {
@@ -74,6 +111,7 @@ ol, ul {
 .login-form-grid-container .grid-item-username-label {
     grid-area: usrlabel;
     justify-self: start;
+    padding: 3px 5px;
 }
 
 .login-form-grid-container .grid-item-username {
@@ -83,6 +121,7 @@ ol, ul {
 .login-form-grid-container .grid-item-password-label {
     grid-area: pswlabel;
     justify-self: start;
+    padding: 3px 5px;
 }
 
 .login-form-grid-container .grid-item-password {

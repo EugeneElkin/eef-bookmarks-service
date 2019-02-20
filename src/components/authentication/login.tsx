@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export interface ILoginComponentDescriptor {
-
+    loginToServiceAction: () => void;
 }
 
 export class LoginComponent extends React.Component<ILoginComponentDescriptor> {
@@ -12,7 +12,7 @@ export class LoginComponent extends React.Component<ILoginComponentDescriptor> {
                 <div className="grid-item grid-item-username"><input type="text" /></div>
                 <div className="grid-item grid-item-password-label">Password:</div>
                 <div className="grid-item grid-item-password"><input type="password" /></div>
-                <div className="grid-item grid-item-button"><button>Login</button></div>
+                <div className="grid-item grid-item-button"><button onClick={this.props.loginToServiceAction}>Login</button></div>
             </div>
 
         );

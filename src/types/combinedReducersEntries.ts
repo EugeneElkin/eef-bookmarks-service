@@ -1,7 +1,7 @@
-import { AuthProps } from "./authProps";
 import { AppProps } from "./appProps";
+import { AuthProps } from "./authProps";
 
-export type CombinedReducersEntries = {
-    authReducer: AuthProps
-    appReducer: AppProps
+export interface ICombinedReducersEntries {
+    authReducer: AuthProps;
+    appReducer: AppProps;
 }
