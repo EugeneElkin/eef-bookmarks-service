@@ -39,7 +39,7 @@ module.exports = {
         "react-dom": "ReactDOM",
         "react-redux": "ReactRedux",
         "redux": "Redux",
-        "axios": "Axios"
+        "axios": "axios"
     },
     plugins: [
         new HtmlWebpackPlugin({

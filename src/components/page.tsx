@@ -1,21 +1,8 @@
 import * as React from "react";
-import { AuthComponent } from "./authentication/auth";
-import { connect } from "react-redux";
-import { Action, Dispatch } from "redux";
-import { AppActions } from "../state/actions";
-import { ICombinedReducersEntries } from "../types/combinedReducersEntries";
+import { ConnectedAuthComponent } from "./authentication/auth";
+import { store } from "..";
 
-export interface IPageComponentDescriptor extends IPageComponentProps, IPageComponentActions {
-}
-
-interface IPageComponentProps {
-    isLoginActive?: boolean | null;
-}
-
-interface IPageComponentActions {
-    activateLoginTabAction: () => void;
-    activateSignUpTabAction: () => void;
-    loginToServiceAction: () => void;
+export interface IPageComponentDescriptor {
 }
 
 export class PageComponent extends React.Component<IPageComponentDescriptor> {
@@ -26,39 +13,8 @@ export class PageComponent extends React.Component<IPageComponentDescriptor> {
     render() {
         return (
             <React.Fragment>
-                <AuthComponent
-                    isLoginActive={this.props.isLoginActive}
-                    activateLoginTabAction={this.props.activateLoginTabAction}
-                    activateSignUpTabAction={this.props.activateSignUpTabAction}
-                    loginToServiceAction={this.props.loginToServiceAction}
-                />
+                <ConnectedAuthComponent store={store} />
             </React.Fragment>
         );
     }
 }
-
-const mapStateToProps: (state: ICombinedReducersEntries) => IPageComponentProps = (state) => {
-    return {
-        isLoginActive: state ? state.appReducer.isLoginActive : true
-    }
-};
-
-const mapDispatchToProps: (dispatch: Dispatch<Action<number>>) => IPageComponentActions = dispatch => {
-    return {
-        activateLoginTabAction: () => {
-            dispatch(AppActions.activateLoginTabAction())
-        },
-        activateSignUpTabAction: () => {
-            dispatch(AppActions.activateSignUpTabAction())
-        },
-        loginToServiceAction: () => {
-            // TODO: make AJAX request and then dispatch action there
-            console.log(255);
-        }
-    }
-}
-
-export const ConnectedPageComponent: any = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(PageComponent);
